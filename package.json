@@ -1,0 +1,37 @@
+{
+  "name": "flextree.js",
+  "title": "FlextreeJS",
+  "version": "1.0.0",
+  "description": "FlextreeJS is a lightweight open source jQuery plugin that provides flexible tree-like layout such as treeview, it's template-based and it's fully customizable.",
+  "main": "dist/flextree.js",
+  "dependencies": {
+    "jquery": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean-css": "^2.0.4",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-rename": "^1.2.2"
+  },
+  "scripts": {
+    "build": "npm install && gulp",
+    "start": "gulp watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhang-rf/flextree.git"
+  },
+  "keywords": [
+    "flextree",
+    "tree",
+    "javascript"
+  ],
+  "author": "zhangrf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhang-rf/flextree/issues"
+  },
+  "homepage": "https://github.com/zhang-rf/flextree#readme"
+}

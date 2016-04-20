@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" href="../dist/css/flextree.css">
+    <style>
+        a {
+            font-size: 14px;
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<script src="assets/js/jquery-1.12.2.js"></script>
+<script src="../dist/flextree.js"></script>
+<script src="../dist/flextree.components.js"></script>
+<script>
+    var template = '<span class="fa ft-collapsible"></span><input class="ft-checkbox" type="checkbox"><a href="##">{departname}</a><span class="fa ft-ajax"></span>';
+    $.flextree.global = {
+        template: template,
+        args: {
+            parentId: 'parentdepartid',
+            id: 'departid',
+            collapsible: true,
+            collapseEvent: 'dblclick',
+            fixDblClickBug: false
+        }
+    };
+    $.flextree.components.global = {selectable: [], collapsible: [], checkbox: [], dnd5: []};
+    $.ajax('data.json').done(function (data) {
+        var $tree = $('body').tree(data, function (data, i) {
+//            $(this).find(':checkbox').on($.flextree.components.checkbox.eventCheck, function () {
+//                document.title = $(this).treeRoot().treeChecked().text();
+//            });
+//            $(this).on($.flextree.components.checkbox.eventCheck, function () {
+//                $(this).treeRoot().treeChecked().treeNext().treeSelect();
+//            });
+
+            $(this).treeAjax({url: 'data.json'}).done(function (node, data) {
+                $(node).tree(data);
+            });
+        });
+        $tree.css('float', 'left');
+    });
+</script>
+</body>
+</html>
