@@ -1,0 +1,41 @@
+html {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #f7fafd;
+}
+
+hr {
+    border: none;
+    border-bottom: thin solid #eee;
+}
+
+a {
+    margin: 0.5em;
+    color: dodgerblue;
+    text-decoration: none;
+}
+
+.container {
+    margin: auto;
+    padding: 1em;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.sub-navigator {
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    padding: 0 !important;
+    border-top: medium solid dodgerblue;
+}
+
+.item {
+    padding: 0.5em 0.5em 0.5em 2em;
+}
+
+.item a {
+    font-size: 0.8em;
+}
+
+.item a:hover {
+    border-bottom: thin solid dodgerblue;
+}

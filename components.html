@@ -1,0 +1,249 @@
+<!doctype html><html class=no-js><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=description><meta name=keywords><meta name=viewport content="width=device-width, initial-scale=1"><title>FlextreeJS</title><meta name=renderer content=webkit><meta http-equiv=Cache-Control content=no-siteapp><link rel=icon type=image/png href=assets/i/favicon.png><link rel=stylesheet href=assets/css/amazeui.css><link rel=stylesheet href=assets/css/flextree.css><link rel=stylesheet href=assets/css/app.css><link rel=stylesheet href=assets/css/documentation.css></head><body><div class=nav id=nav><a href=http://zhang-rf.github.io/flextree><img class=nav-logo src=assets/i/logo-white.png></a><div id=nav-tree></div></div><div class=content><ul class=content-header><li><a href=showcase.html>Showcase</a></li><li><a href=documentation.html>Documentation</a></li><li><a href=components.html>Components</a></li></ul><div class=am-container><h1 id=hash-gs>Get Started</h1>components provide easy-to-use feature enhancement, we have already developed some frequently used components. And it's very easy to develop your own components, just have a look at these pre-developed components' source code and you will know how to develop yours.<p>now just have a quick tutorial to learn how to use components.<ol class=steps><li>Components rely on flextree.js so you must download FlextreeJS and setup flextree.js first.</li><li>Include flextree.css<pre class=code>
+&lt;link rel="stylesheet" href="flextree.css">
+                    </pre></li><li>Iinclude flextree.components.js<pre class=code>
+&lt;script src="flextree.components.js">&lt;/script>
+                    </pre></li><li>Then the only difference is to adding "args.components" option, here use a component "selectable" as a example.<pre class=code>
+&lt;div id="demo">&lt;/div>
+&lt;script src="jquery.js">&lt;/script>
+&lt;script src="flextree.js">&lt;/script>
+&lt;script src="flextree.components.js">&lt;/script>
+&lt;script>
+    $(function () {
+        var template = '&lt;a href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {<span style="color: blue;">components: {selectable: [true]}</span>};
+        <span style="color: blue;">// components format is: {componentName1: [arg1, arg2 ....], componentName2: [arg1, arg2 ....], ...}</span>
+
+        $('#demo').tree(dataSource, template, args);
+    });
+&lt;/script>
+                    </pre><div id=demo></div></li><li>Also, there is a global property "$.flextree.components.global".<pre class=code>
+$.flextree.components.global = {selectable: [true]}; // for example
+                    </pre></li></ol></p><h1 id=hash-css>Stylesheet</h1>"flextree.css" contains styles that used by components, you can modify styles as you like.<h1 id=hash-c>Components</h1><ul><li id=hash-selectable><b>Selectable</b><br>this component makes your nodes selectable.<br><p>Arguments<br><ul><li>multiple {boolean}<br><small>set to true to allow multiple selection, default is false</small></li><li>cancelable {boolean}<br><small>whether a node can be deselected, default is true</small></li></ul></p><p>Events<br><ul><li>$.flextree.components.selectable.eventSelect<br><small>this event fires when a node get selected, you can catch this event either on tree or on nodes.</small></li></ul></p><p>APIs<br><ul><li>$().treeSelected()<br><small>get selected nodes of this tree.</small></li><li>$().treeSelect()<br><small>select this node.</small></li></ul><div id=demo-selectable></div><pre class=code>
+        var template = '&lt;a href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {id: 'id', parentId: 'parent_id', components: {selectable: [true]}};
+
+        $('#demo-selectable').tree(dataSource, template, args, function (data, i) {
+            $(this).on($.flextree.components.selectable.eventSelect, function () {
+                var selected = 'You selected: ';
+                $(this).treeSelected().each(function () {
+                    selected += $(this).text() + ' ';
+                });
+                alert(selected);
+            });
+        });
+                </pre></p></li><li id=hash-collapsible><b>Collapsible</b><br>this component adds collapse icon to your nodes.<br>this component needs <a href=http://fontawesome.io target=_blank>FontAwesome</a>, please include it first.<br><p>Arguments<br><ul><li>None</li></ul></p><p>Template<br><small>this component requires some specific elements in your template.</small><ul><li>&lt;span class="fa ft-collapsible">&lt;/span></li></ul><div id=demo-collapsible></div><pre class=code>
+        var template = '&lt;span class="fa ft-collapsible">&lt;/span>&lt;a href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {id: 'id', parentId: 'parent_id', collapsible: true, collapseEvent: null, components: {collapsible: []}};
+
+        $('#demo').tree(dataSource, template, args);
+                </pre></p></li><li id=hash-checkbox><b>Checkbox</b><br>this component adds checkbox to your nodes.<br><p>Arguments<br><ul><li>multiple {boolean}<br><small>set to true to allow multiple check, default is true</small></li></ul></p><p>Template<br><small>this component requires some specific elements in your template.</small><ul><li>&lt;input class="ft-checkbox" type="checkbox"></li></ul></p><p>Events<br><ul><li>$.flextree.components.checkbox.eventCheck<br><small>this event fires when a node get checked, you can catch this event either on tree or on nodes.</small></li></ul></p><p>APIs<br><ul><li>$().treeChecked()<br><small>get checked nodes of this tree.</small></li></ul><div id=demo-checkbox></div><pre class=code>
+        var template = '&lt;input class="ft-checkbox" type="checkbox">&lt;a href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {id: 'id', parentId: 'parent_id', components: {checkbox: []}};
+
+        $('#demo').tree(dataSource, template, args, function (data, i) {
+                $(this).on($.flextree.components.checkbox.eventCheck, function () {
+                    var checked = 'You checked:\n';
+                    $(this).treeChecked().each(function () {
+                        checked += $(this).text() + '\n';
+                    });
+                    alert(checked);
+                });
+            });
+                </pre></p></li><li id=hash-dnd5><b>DnD5</b><br>this component adds HTML5 drag-and-drop feature to your nodes.<br><p>Arguments<br><ul><li>None</li></ul><div id=demo-dnd5></div><pre class=code>
+        var template = '&lt;input class="ft-checkbox" type="checkbox">&lt;a href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'}];
+        var args = {id: 'id', parentId: 'parent_id', components: {dnd5: []}};
+
+        $('#demo').tree(dataSource, template, args);
+                </pre></p></li><li id=hash-ajax><b>Ajax</b><br>this component extended $.fn and added some new features, it don't need to be declared in components option.<br>this component needs <a href=http://fontawesome.io target=_blank>FontAwesome</a>, please include it first.<br><p>Template<br><small>this component requires some specific elements in your template.</small><ul><li>&lt;span class="fa ft-ajax">&lt;/span></li></ul></p><p>APIs<br><ul><li>$().treeAjax(ajax)<br><small>ajax {object}</small><br><small>bind an ajax object to this node, once this node is activated, $.ajax(ajax) will be executed, so argument "<span style="color: blue;">ajax</span>" is the same as $.ajax(<span style="color: blue;">ajax</span>)'s ajax argument. This method returns a $.Deferred object.</small></li></ul><div id=demo-ajax></div><pre class=code>
+        var template = '&lt;a href="javascript:;">{myAwesomeText}&lt;/a>&lt;span class="fa ft-ajax">&lt;/span>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {id: 'id', parentId: 'parent_id', collapsible: true};
+
+        $('#demo').tree(dataSource, template, args, function (data, i) {
+            $(this).treeAjax({url: 'assets/i/data.json'}).done(function (node, data) {
+                alert('Ajax done, now will add some new nodes from ajax data.');
+                $(node).tree(data, template);
+            }).fail(function (node, data) {
+                alert('Ajax fail.');
+            });
+        });
+                </pre></p></li><li id=hash-search><b>Search</b><br>this component extended $.fn and added some new features, it don't need to be declared in components option.<br><p>APIs<br><ul><li>$().treeSearch(keyword, selector)<br><small>keyword {string}</small><br><small>selector {string, optional}</small><br><small>search this tree's text content and return matched nodes.</small></li></ul><div id=demo-search></div><pre class=code>
+        var template = '&lt;a href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {id: 'id', parentId: 'parent_id'};
+
+        var $tree = $.flextree.tree(dataSource, template, args);
+        var $input = $('&lt;input id="demo-search-kw"/>').val('A');
+        var $button = $('&lt;button>Search&lt;/button>').on('click', function () {
+            var search = 'You got:\n';
+            $tree.treeSearch($('#demo-search-kw').val()).each(function () {
+                search += $(this).text() + '\n';
+            });
+            alert(search);
+        });
+        $('#demo').append($input).append($button).append($tree);
+                </pre></p></li></ul></div><div class=footer>FlextreeJS Copyright (c) 2016 zhangrf licensed under MIT. QQ qun: 465774392</div></div><script src=assets/js/jquery-2.2.2.js></script><script src=assets/js/amazeui.js></script><script src=assets/js/flextree.js></script><script src=assets/js/flextree.components.js></script><script src=assets/js/app.js></script><script>
+    $(function () {
+        var index = [
+            {id: 'Get Started', parentId: null, link: '#hash-gs'},
+            {id: 'Stylesheet', parentId: null, link: '#hash-css'},
+            {id: 'Components', parentId: null, link: '#hash-c'},
+            {id: 'Selectable', parentId: 'Components', link: '#hash-selectable'},
+            {id: 'Collapsible', parentId: 'Components', link: '#hash-collapsible'},
+            {id: 'Checkbox', parentId: 'Components', link: '#hash-checkbox'},
+            {id: 'DnD5', parentId: 'Components', link: '#hash-dnd5'},
+            {id: 'Ajax', parentId: 'Components', link: '#hash-ajax'},
+            {id: 'Search', parentId: 'Components', link: '#hash-search'}];
+        var template = '<a href="{link}">{id}</a>';
+        var args = {
+            id: 'id',
+            parentId: 'parentId',
+            collapsible: true,
+            components: {selectable: []}
+        };
+        $('#nav-tree').tree(index, template, args).treeAll().first().treeActivate().treeSelect();
+    });
+
+    $(function () {
+        var template = '<li style="font-size: 14px;"><a href="javascript:;">{myAwesomeText}</a></li>';
+        var dataSource = [{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {id: 'A2', parent_id: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {id: 'A3', parent_id: 'A1', myAwesomeText: 'I am A3', myAwesomeData: 'AwesomeA3'},
+            {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {id: 'C2', parent_id: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {id: 'id', parentId: 'parent_id', components: {selectable: [true]}};
+
+        $('#demo').tree(dataSource, template, args);
+
+        (function () {
+            var args = {id: 'id', parentId: 'parent_id', components: {selectable: [true]}};
+            $('#demo-selectable').tree(dataSource, template, args, function (data, i) {
+                $(this).on($.flextree.components.selectable.eventSelect, function () {
+                    var selected = 'You selected:\n';
+                    $(this).treeSelected().each(function () {
+                        selected += $(this).text() + '\n';
+                    });
+                    alert(selected);
+                });
+            });
+        }());
+
+        (function () {
+            var template = '<li style="font-size: 14px;"><span class="fa ft-collapsible"></span><a href="javascript:;">{myAwesomeText}</a></li>';
+            var args = {
+                id: 'id',
+                parentId: 'parent_id',
+                collapsible: true,
+                collapseEvent: null,
+                components: {collapsible: []}
+            };
+
+            $('#demo-collapsible').tree(dataSource, template, args);
+        }());
+
+        (function () {
+            var template = '<li style="font-size: 14px;"><input class="ft-checkbox" type="checkbox"><a href="javascript:;">{myAwesomeText}</a></li>';
+            var args = {
+                id: 'id',
+                parentId: 'parent_id',
+                components: {checkbox: []}
+            };
+
+            $('#demo-checkbox').tree(dataSource, template, args, function (data, i) {
+                $(this).on($.flextree.components.checkbox.eventCheck, function () {
+                    var checked = 'You checked:\n';
+                    $(this).treeChecked().each(function () {
+                        checked += $(this).text() + '\n';
+                    });
+                    alert(checked);
+                });
+            });
+        }());
+
+        (function () {
+            var args = {
+                id: 'id',
+                parentId: 'parent_id',
+                components: {dnd5: []}
+            };
+
+            $('#demo-dnd5').tree([{id: 'A1', parent_id: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+                {id: 'B1', parent_id: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+                {id: 'C1', parent_id: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'}], template, args);
+        }());
+
+        (function () {
+            var template = '<li style="font-size: 14px;"><a href="javascript:;">{myAwesomeText}</a><span class="ft-ajax"></span></li>';
+            var args = {
+                id: 'id',
+                parentId: 'parent_id',
+                collapsible: true
+            };
+
+            $('#demo-ajax').tree(dataSource, template, args, function (data, i) {
+                $(this).treeAjax({url: 'assets/i/data.json'}).done(function (node, data) {
+                    alert('Ajax done, now will add some new nodes from ajax data.');
+                    $(node).tree(data, template);
+                }).fail(function (node, data) {
+                    alert('Ajax fail.');
+                });
+            });
+        }());
+
+        (function () {
+            var args = {
+                id: 'id',
+                parentId: 'parent_id'
+            };
+
+            var $tree = $.flextree.tree(dataSource, template, args);
+            var $input = $('<input id="demo-search-kw"/>').val('A');
+            var $button = $('<button>Search</button>').on('click', function () {
+                var search = 'You got:\n';
+                $tree.treeSearch($('#demo-search-kw').val()).each(function () {
+                    search += $(this).text() + '\n';
+                });
+                alert(search);
+            });
+            $('#demo-search').append($input).append($button).append($tree);
+        }());
+    });
+</script></body></html>

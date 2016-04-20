@@ -1,0 +1,45 @@
+html {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #f7fafd;
+}
+
+hr {
+    border: none;
+    border-bottom: thin solid #eee;
+}
+
+.container {
+    margin: auto;
+    padding: 1em;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.comment {
+    padding: 1em;
+}
+
+.comment a {
+    color: dodgerblue;
+    text-decoration: none;
+}
+
+.comment a:hover {
+    color: darkred;
+}
+
+.comment-footer {
+    position: relative;
+    text-align: right;
+    font-size: 0.8em;
+}
+
+.comment-footer-time {
+    position: absolute;
+    left: 0;
+    color: gray;
+}
+
+.comment-footer-reply {
+    padding: 0.8em;
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "A10",
+    "parent_id": null,
+    "myAwesomeText": "I am A10",
+    "myAwesomeData": "AwesomeA10"
+  },
+  {
+    "id": "A20",
+    "parent_id": "A10",
+    "myAwesomeText": "I am A20",
+    "myAwesomeData": "AwesomeA20"
+  },
+  {
+    "id": "A30",
+    "parent_id": "A10",
+    "myAwesomeText": "I am A30",
+    "myAwesomeData": "AwesomeA30"
+  },
+  {
+    "id": "B10",
+    "parent_id": null,
+    "myAwesomeText": "I am B10",
+    "myAwesomeData": "AwesomeB10"
+  },
+  {
+    "id": "C10",
+    "parent_id": null,
+    "myAwesomeText": "I am C10",
+    "myAwesomeData": "AwesomeC10"
+  },
+  {
+    "id": "C20",
+    "parent_id": "C10",
+    "myAwesomeText": "I am C20",
+    "myAwesomeData": "AwesomeC20"
+  }
+]

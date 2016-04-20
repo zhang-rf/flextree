@@ -1,0 +1,276 @@
+<!doctype html><html class=no-js><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=description><meta name=keywords><meta name=viewport content="width=device-width, initial-scale=1"><title>FlextreeJS</title><meta name=renderer content=webkit><meta http-equiv=Cache-Control content=no-siteapp><link rel=icon type=image/png href=assets/i/favicon.png><link rel=stylesheet href=assets/css/amazeui.css><link rel=stylesheet href=assets/css/flextree.css><link rel=stylesheet href=assets/css/app.css><link rel=stylesheet href=assets/css/documentation.css></head><body><div class=nav id=nav><a href=http://zhang-rf.github.io/flextree><img class=nav-logo src=assets/i/logo-white.png></a><div id=nav-tree></div></div><div class=content><ul class=content-header><li><a href=showcase.html>Showcase</a></li><li><a href=documentation.html>Documentation</a></li><li><a href=components.html>Components</a></li></ul><div class="am-container steps"><h1 id=hash-ft>$.flextree</h1><ul><li id=hash-ft_tree><b>$.flextree.tree(dataSource, template, args, onBind)</b><br>generate a tree using JSON object array.<ul><li>dataSource {array}<br><small>JSON data array, you need to at least provide id and parent id in each item.</small></li><li>template {string}<br><small>template used in each node, the outter &lt;li> element is optional. And you can use placeholders in template such as {id}, they will be automatically replaced during generation</small></li><li>args {object}<br><small>args contains several options.</small><ul><li>args.id {string}<br><small>specifies the id in JSON data, if not specified, default is "id"</small></li><li>args.parentId {string}<br><small>specifies the parent id in JSON data, if not specified, default is "parent_id"</small><pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{<span style="color: blue;">myId</span>: 'A1', <span style="color: blue;">myParentId</span>: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {<span style="color: blue;">myId</span>: 'A2', <span style="color: blue;">myParentId</span>: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {<span style="color: blue;">myId</span>: 'B1', <span style="color: blue;">myParentId</span>: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {<span style="color: blue;">myId</span>: 'C1', <span style="color: blue;">myParentId</span>: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'}];
+
+        var $tree = $.flextree.tree(dataSource, template, {id: '<span style="color: blue;">myId</span>', parentId: '<span style="color: blue;">myParentId</span>'});
+        $tree.appendTo($('body'));
+                                </pre></li><li>args.correctParent {boolean}<br><small>correct JSON data that have a invalid parent id if set to true, default is false</small><pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: '<span style="color: blue;">D1</span>', myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'}];
+        // "D1" is an invalid parent node, so "C1" node will be discarded unless you set correctParent to true
+
+        var $tree = $.flextree.tree(dataSource, template, {id: 'myId', parentId: 'myParentId', <span style="color: blue;">correctParent: true</span>});
+        $tree.appendTo($('body'));
+                                </pre></li><li>args.collapsible {boolean}<br><small>set to true to enable collapse feature, default is false</small></li><li>args.collapseEvent {string}<br><small>collapse event, this is valid only if this tree is a collapsible tree, default is "click", set to null if you want to handle collapse feature all by yourself</small><div id=demo-ce></div><pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        var $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            <span style="color: blue;">collapsible: true,
+            collapseEvent: 'mouseenter'</span>
+        });
+        $tree.appendTo($('body'));
+                                </pre></li><li>args.exclusiveNode {boolean}<br><small>collapse the other nodes when expand one node if set to true, this is valid only if this tree is a collapsible tree, default is true</small></li><li>args.fixDblClickBug {boolean}<br><small>if set to true, delay "onClick" for 300ms and add a "isClick" flag in Event object to determine whether it's a click event or dblclick event, this is valid only if this tree is a collapsible tree, default is false</small></li><li>args.onBind {function (data {object}, i {number}, node {element})}<br><small>this will be called each time a node generated, you can custom your nodes in the callback. this's called in the context of the current node, so the keyword "this" refers to the node.</small><div id=demo-ob></div><pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        var $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            <span style="color: blue;">collapseEvent: 'dblclick',
+            fixDblClickBug: true,
+            onBind: function (data, i) {
+                $(this).children('a').data('myAwesomeData', data.myAwesomeData)
+                        .on('click', function (e) {
+                            if (e.isClick)
+                                alert($(this).data('myAwesomeData'));
+                        });
+            }</span>
+        });
+        $tree.appendTo($('body'));
+                        </pre></li></ul></li><li>onBind<br><small>this is the same as args.onBind, but when specify both, this will override args.onBind.</small><pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        var $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            <span style="color: blue;">onBind: function (data, i) {
+                alert('args.onBind'); // this will not be executed
+            }</span>
+        }, function (data, i) {
+            alert('onBind');
+        });
+        $tree.appendTo($('body'));
+                        </pre></li><li>Return value<br><small>a jQuery element that represents the generated tree.</small></li></ul></li><li id=hash-ft_eActivate><b>$.flextree.eventActivate {string}</b><br>name of the event happened when a node expand or collapse, only if this tree is a collapsible tree will this be fired.<div id=demo-a></div><pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            onBind: function (data, i) {
+                $(this).on(<span style="color: blue;">$.flextree.eventActivate</span>, function () {
+                    alert('You activated ' + $(this).text());
+                });
+            }
+        });
+        $tree.appendTo($('body'));
+                </pre></li></ul><h1 id=hash-ft-global>$.flextree.global</h1><ul><li id=hash-ft-global_padding><b>$.flextree.global.padding</b><br>set padding-left for child nodes, default padding is 1em.<div id=demo-p></div><pre class=code>
+$.flextree.global.padding='50px';
+                </pre></li><li id=hash-ft-global_template><b>$.flextree.global.template</b><br>set global template, this is very useful when your template is constant.<br>when global template set, you can ignore "template" argument in tree(dataSource, template, args, onBind).<br>but you can still pass "template" argument and it will override global template.</li><li id=hash-ft-global_args><b>$.flextree.global.args</b><br>this is similar as global template.<pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+        var args = {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true
+        };
+        <span style="color: blue;">$.flextree.global.template = template;
+        $.flextree.global.args = args;
+
+        $tree = $.flextree.tree(dataSource);</span>
+        $tree.appendTo($('body'));
+                </pre></li></ul><h1 id=hash-ft-fn>$.fn</h1><ul><li id=hash-ft-fn_tree><b>$().tree(dataSource, template, args, onBind)</b><br>this is the same as "$.flextree.tree", but this will directly append the tree to this container.</li><li id=hash-ft-fn_tp><b>$().treeParent()</b><br>get the parent of this tree node.<pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            onBind: function (data, i) {
+                <span style="color: blue;">if(data.myId=='A2') {
+                    $(this).on('click', function () {
+                        alert($(this).treeParent().text()); // "I am A1"
+                    });
+                }</span>
+            }
+        });
+        $tree.appendTo($('body'));
+                </pre></li><li id=hash-ft-fn_tps><b>$().treeParents()</b><br>get the ancestors of this tree node.</li><li id=hash-ft-fn_tc><b>$().treeChildren()</b><br>get the children of this tree node.</li><li id=hash-ft-fn_tf><b>$().treeFind()</b><br>get the descendants of this tree node.</li><li id=hash-ft-fn_ts><b>$().treeSiblings()</b><br>get the siblings of this tree node.</li><li id=hash-ft-fn_tn><b>$().treeNext()</b><br>get the immediately following sibling of this tree node.</li><li id=hash-ft-fn_tna><b>$().treeNextAll()</b><br>get all following siblings of this tree node.</li><li id=hash-ft-fn_tprev><b>$().treePrev()</b><br>get the immediately preceding sibling of this tree node.</li><li id=hash-ft-fn_tpreva><b>$().treePrevAll()</b><br>get all preceding siblings of this tree node.</li><li id=hash-ft-fn_tnode><b>$().treeNode()</b><br>get this &lt;li> node.<pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            onBind: function (data, i) {
+                    $(this).on('click', function () {
+                        <span style="color: blue;">// $(this).children('a').treeNode() equals to $(this)</span>
+                    });
+            }
+        });
+        $tree.appendTo($('body'));
+                </pre></li><li id=hash-ft-fn_tr><b>$().treeRoot()</b><br>get the root of this tree.<pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            onBind: function (data, i) {
+                    $(this).on('click', function () {
+                        <span style="color: blue;">// $(this).treeRoot() equals to $tree</span>
+                    });
+            }
+        });
+        $tree.appendTo($('body'));
+                </pre></li><li id=hash-ft-fn_tall><b>$().treeAll()</b><br>get all nodes of this tree.<pre class=code>
+        var template = '&lt;a style="font-size: 14px;" href="javascript:;">{myAwesomeText}&lt;/a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true
+        });
+
+        <span style="color: blue;">$tree.treeAll().each(function () {
+            alert($(this).text());
+        });</span>
+        $tree.appendTo($('body'));
+                </pre></li><li id=hash-ft-fn_ta><b>$().treeActivate()</b><br>collapse this node if it's expanded, expand this node if it's collapsed. And this will fire "$.flextree.eventActive" Event, this take effect only if this tree is a collapsible tree.</li><li id=hash-ft-fn_texp><b>$().treeExpanded()</b><br>return whether this node is expanded or not, this take effect only if this tree is a collapsible tree.</li></ul></div><div class=footer>FlextreeJS Copyright (c) 2016 zhangrf licensed under MIT. QQ qun: 465774392</div></div><script src=assets/js/jquery-2.2.2.js></script><script src=assets/js/amazeui.js></script><script src=assets/js/flextree.js></script><script src=assets/js/flextree.components.js></script><script src=assets/js/app.js></script><script>
+    $(function () {
+        var index = [
+            {id: '$.flextree', parentId: null, link: '#hash-ft'},
+            {id: 'tree()', parentId: '$.flextree', link: '#hash-ft_tree'},
+            {id: 'eventActivate', parentId: '$.flextree', link: '#hash-ft_eActivate'},
+            {id: '$.flextree.global', parentId: null, link: '#hash-ft-global'},
+            {id: 'padding', parentId: '$.flextree.global', link: '#hash-ft-global_padding'},
+            {id: 'template', parentId: '$.flextree.global', link: '#hash-ft-global_template'},
+            {id: 'args', parentId: '$.flextree.global', link: '#hash-ft-global_args'},
+            {id: '$.fn', parentId: null, link: '#hash-ft-fn'},
+            {id: 'tree()', parentId: '$.fn', link: '#hash-ft-fn_tree'},
+            {id: 'treeParent()', parentId: '$.fn', link: '#hash-ft-fn_tp'},
+            {id: 'treeParents()', parentId: '$.fn', link: '#hash-ft-fn_tps'},
+            {id: 'treeChildren()', parentId: '$.fn', link: '#hash-ft-fn_tc'},
+            {id: 'treeFind()', parentId: '$.fn', link: '#hash-ft-fn_tf'},
+            {id: 'treeSiblings()', parentId: '$.fn', link: '#hash-ft-fn_ts'},
+            {id: 'treeNext()', parentId: '$.fn', link: '#hash-ft-fn_tn'},
+            {id: 'treeNextAll()', parentId: '$.fn', link: '#hash-ft-fn_tna'},
+            {id: 'treePrev()', parentId: '$.fn', link: '#hash-ft-fn_tprev'},
+            {id: 'treePrevAll()', parentId: '$.fn', link: '#hash-ft-fn_tpreva'},
+            {id: 'treeNode()', parentId: '$.fn', link: '#hash-ft-fn_tnode'},
+            {id: 'treeRoot()', parentId: '$.fn', link: '#hash-ft-fn_tr'},
+            {id: 'treeAll()', parentId: '$.fn', link: '#hash-ft-fn_tall'},
+            {id: 'treeActivate()', parentId: '$.fn', link: '#hash-ft-fn_ta'},
+            {id: 'treeExpanded()', parentId: '$.fn', link: '#hash-ft-fn_texp'}];
+        var template = '<a href="{link}">{id}</a>';
+        var args = {
+            id: 'id',
+            parentId: 'parentId',
+            collapsible: true,
+            components: {selectable: []}
+        };
+        $('#nav-tree').tree(index, template, args).treeAll().first().treeActivate().treeSelect();
+    });
+
+    $(function () {
+        var template = '<a style="font-size: 14px;" href="javascript:;">{myAwesomeText}</a>';
+        var dataSource = [{myId: 'A1', myParentId: null, myAwesomeText: 'I am A1', myAwesomeData: 'AwesomeA1'},
+            {myId: 'A2', myParentId: 'A1', myAwesomeText: 'I am A2', myAwesomeData: 'AwesomeA2'},
+            {myId: 'B1', myParentId: null, myAwesomeText: 'I am B1', myAwesomeData: 'AwesomeB1'},
+            {myId: 'C1', myParentId: null, myAwesomeText: 'I am C1', myAwesomeData: 'AwesomeC1'},
+            {myId: 'C2', myParentId: 'C1', myAwesomeText: 'I am C2', myAwesomeData: 'AwesomeC2'}];
+
+        var $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            collapseEvent: 'mouseenter'
+        });
+        $tree.css('display', 'inline-block').appendTo($('#demo-ce'));
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            collapseEvent: 'dblclick',
+            fixDblClickBug: true,
+            onBind: function (data, i) {
+                $(this).children('a').data('myAwesomeData', data.myAwesomeData)
+                        .on('click', function (e) {
+                            if (e.isClick)
+                                alert($(this).data('myAwesomeData'));
+                        });
+            }
+        });
+        $tree.appendTo($('#demo-ob'));
+
+        $.flextree.global.padding = '50px';
+        $tree = $.flextree.tree(dataSource, template, {id: 'myId', parentId: 'myParentId'});
+        $tree.appendTo($('#demo-p'));
+        $.flextree.global.padding = '1em';
+
+        $tree = $.flextree.tree(dataSource, template, {
+            id: 'myId',
+            parentId: 'myParentId',
+            collapsible: true,
+            onBind: function (data, i) {
+                $(this).on($.flextree.eventActivate, function () {
+                    alert('You activated ' + $(this).text());
+                });
+            }
+        });
+        $tree.appendTo($('#demo-a'));
+    });
+</script></body></html>

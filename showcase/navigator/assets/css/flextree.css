@@ -1,0 +1,95 @@
+.ft-selectable {
+    -webkit-transition: background 0.15s;
+    transition: background 0.15s;
+}
+
+.ft-selectable:hover {
+    background: #e6e6e6;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.ft-selectable.ft-selected {
+    background: #e6e6e6;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.ft-collapsible {
+    display: inline-block;
+    width: 2em;
+    text-align: center;
+    opacity: 0.6;
+    cursor: pointer;
+    -webkit-transition: opacity 0.15s, -webkit-transform 0.15s;
+    transition: opacity 0.15s, -webkit-transform 0.15s;
+    transition: opacity 0.15s, transform 0.15s;
+    transition: opacity 0.15s, transform 0.15s, -webkit-transform 0.15s;
+}
+
+.ft-collapsible:before {
+    content: "\f105";
+}
+
+.ft-collapsible:hover {
+    opacity: 1;
+    -webkit-transform: translate(5px);
+        -ms-transform: translate(5px);
+            transform: translate(5px);
+}
+
+.ft-collapsible.ft-expanded:before {
+    content: "\f107";
+}
+
+.ft-checkbox {
+    margin: 0 0.5em !important;
+    vertical-align: -10%;
+}
+
+.ft-dnd5-top {
+    border-top: #e6e6e6 solid thin !important;
+    border-top: rgba(0, 0, 0, 0.1) solid thin !important;
+}
+
+.ft-dnd5-bottom {
+    border-bottom: #e6e6e6 solid thin !important;
+    border-bottom: rgba(0, 0, 0, 0.1) solid thin !important;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+    }
+}
+
+.ft-ajax {
+    display: inline-block;
+    visibility: hidden;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    -webkit-animation: spin 1s infinite steps(8);
+            animation: spin 1s infinite steps(8);
+}
+
+.ft-ajax:before {
+    content: "\f110";
+}
+
+.ft-ajax.ft-visible {
+    visibility: visible;
+}

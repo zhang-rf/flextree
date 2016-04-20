@@ -1,0 +1,1 @@
+!function(t){"use strict";t(document).on("click",'a[href^="#"]',function(n){n.preventDefault();var o=t(this).attr("href"),e=0;o.length>1&&(e=t(o).offset().top),t("html, body").animate({scrollTop:e},function(){location.hash=o})})}(jQuery);

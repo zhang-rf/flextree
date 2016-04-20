@@ -1,0 +1,30 @@
+[
+  {
+    "id": "0",
+    "parent_id": null,
+    "categoryName": "App Dev",
+    "items": [
+      "Android",
+      "iOS"
+    ]
+  },
+  {
+    "id": "1",
+    "parent_id": null,
+    "categoryName": "Game Dev",
+    "items": [
+      "Cocos",
+      "Unity3D",
+      "Unreal"
+    ]
+  },
+  {
+    "id": "2",
+    "parent_id": null,
+    "categoryName": "Frameworks",
+    "items": [
+      "Cordova",
+      "React Native"
+    ]
+  }
+]
