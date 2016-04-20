@@ -1,6 +1,6 @@
 /*!
  * FlextreeJS.Components v1.0.0
- * http://flextreejs.github.io/
+ * http://zhang-rf.github.io/flextree
  *
  * Copyright Zhang rf and other contributors
  * Released under the MIT license
